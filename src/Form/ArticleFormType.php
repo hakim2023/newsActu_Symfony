@@ -36,6 +36,7 @@ class ArticleFormType extends AbstractType
             ])
             ->add('photo',FileType::class,[
                 'label'=>'Photo',
+                'data_class' => null
             ])
             
         ;
