@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Form;
-
+use App\Entity\Categorie;
 use App\Entity\Article;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -31,7 +31,7 @@ class ArticleFormType extends AbstractType
             ])
             ->add('category',EntityType::class,[
                 'class'=>Categorie::class,
-                'Choice_label'=>'name',
+                'choice_label'=>'name',
                 'label'=>'Choisissez une catégorie',
             ])
             ->add('photo',FileType::class,[
