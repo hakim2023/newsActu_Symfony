@@ -30,7 +30,30 @@
             <td>{{article.createdAt | date('d/m/Y')}}</td>
             <td>{{article.updatedAt | date('d/m/Y')}}</td>
             <td>
+
+                {% if article.deletedAt is null %}
+
               <a href="{{ path('update_article',{'id': article.id} ) }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
+
+               <a   href="{{ path('soft_delete_article',{'id': article.id} ) }}"
+                    onclick="return confirm('Vous voulez vraiment supprimer cet article')"
+                    class="btn btn-danger">
+                    
+                    <i class="fa fa-trash"></i>
+                </a>
+
+                {% else %}
+                <a href="{{ path('restore_article',{'id': article.id} ) }}" class="btn btn-outline-info"><i class="fa fa-trash-restore"></i></a>
+
+               <a   href="{{ path('hard_delete_article',{'id': article.id} ) }}"
+                    onclick="return confirm('Vous voulez vraiment supprimer cet article de la base des données')"
+                    class="btn btn-outline-danger">
+                    
+                    <i class="fas fa-times-circle"></i>
+                </a>
+                  
+                {% endif %}
+
             </td>
          </tr>
           {% endfor %}

@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ArticleFormType extends AbstractType
 {
@@ -18,10 +21,35 @@ class ArticleFormType extends AbstractType
         $builder
             ->add('title',TextType::class,[
                 'label'=>'Titre de l\'article',
+                'constraints'=>[
+                    new NotBlank([
+                        'message'=>'Ce champs ne peut pas etre null'
+                    ]),
+                    new Length([
+                        'min'=>"5",
+                        'max'=>"255",
+                        'minMessage'=>"le nombre minimal est {{ limit }} ",
+                        'maxMessage'=>"le nombre maximal est {{ limit }} ",
+
+                    ])
+
+                ]
 
             ])
             ->add('subtitle',TextType::class,[
-                'label'=>'Sous-titre',
+                'label'=>'Sous-titre',  'constraints'=>[
+                    new NotBlank([
+                        'message'=>'Ce champs ne peut pas etre null'
+                    ]),
+                    new Length([
+                        'min'=>"5",
+                        'max'=>"255",
+                        'minMessage'=>"le nombre minimal est {{ limit }} ",
+                        'maxMessage'=>"le nombre maximal est {{ limit }} ",
+
+                    ])
+
+                ]
             ])
             ->add('content',TextareaType::class,[
                 'label'=>false,
@@ -36,7 +64,16 @@ class ArticleFormType extends AbstractType
             ])
             ->add('photo',FileType::class,[
                 'label'=>'Photo',
-                'data_class' => null
+                'data_class'=>null,
+                'attr'=>[
+                    'data-default-file'=>$options['photo']
+                ],
+                'constraints'=>[
+                  new Image([
+                      'mimeTypes'=>['image/jpg', 'image/png' , 'image/jpeg'],
+                      'mimeTypesMessage'=>"Les types des photos autorisés sont: jpeg , jpg , png"
+                  ]),
+                ]
             ])
             
         ;
@@ -46,6 +83,8 @@ class ArticleFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Article::class,
-        ]);
+            'allow_file_upload'=>true,
+            'photo'=>null,
+        ]);  
     }
 }
